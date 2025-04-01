@@ -21,37 +21,41 @@ import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/assessment" element={<AssessmentPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/plan" element={<PlanPage />} />
-            <Route path="/progress" element={<ProgressPage />} />
-            <Route path="/schedule" element={<SchedulePage />} />
-            <Route path="/coaching" element={<CoachingPage />} />
-            <Route path="/shop" element={<ShopPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/features" element={<FeaturesPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </React.StrictMode>
-);
+// Create a QueryClient instance inside the component
+const App = () => {
+  // Move queryClient inside the component to ensure it's created during the React lifecycle
+  const queryClient = new QueryClient();
+  
+  return (
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/assessment" element={<AssessmentPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/plan" element={<PlanPage />} />
+              <Route path="/progress" element={<ProgressPage />} />
+              <Route path="/schedule" element={<SchedulePage />} />
+              <Route path="/coaching" element={<CoachingPage />} />
+              <Route path="/shop" element={<ShopPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/features" element={<FeaturesPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </React.StrictMode>
+  );
+};
 
 export default App;
