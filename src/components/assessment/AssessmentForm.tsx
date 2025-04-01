@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -190,7 +189,7 @@ const AssessmentForm = () => {
           <span>Step {currentStep + 1} of {steps.length}</span>
           <span>{steps[currentStep]}</span>
         </div>
-        <Progress value={progressPercentage} className="h-2 bg-white/10" indicatorClassName="bg-brand-yellow" />
+        <Progress value={progressPercentage} className="h-2 bg-white/10" />
       </div>
       
       <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6">
