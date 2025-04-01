@@ -1,4 +1,6 @@
+
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -115,6 +117,7 @@ const AssessmentForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const handleNext = () => {
     setCurrentStep((prev) => Math.min(prev + 1, steps.length));
@@ -140,8 +143,8 @@ const AssessmentForm = () => {
         description: "Your personalized fitness plan is being generated.",
       });
       
-      // Redirect to the plan page or show the plan generator
-      window.location.href = "/plan";
+      // Use navigate instead of direct window.location change
+      navigate("/plan");
     } catch (error) {
       toast({
         title: "Submission failed",

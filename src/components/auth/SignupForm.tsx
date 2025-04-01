@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +16,7 @@ const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,7 +41,7 @@ const SignupForm = () => {
     
     try {
       setIsLoading(true);
-      // This would be the actual signup logic
+      // This would be the actual signup logic in a real app
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       toast({
@@ -48,8 +49,8 @@ const SignupForm = () => {
         description: "You've successfully signed up!",
       });
       
-      // Redirect to assessment (in a real app)
-      window.location.href = "/assessment";
+      // Use navigate instead of direct window.location change
+      navigate("/assessment");
     } catch (error) {
       toast({
         title: "Signup failed",
