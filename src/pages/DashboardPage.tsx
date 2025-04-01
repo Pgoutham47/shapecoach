@@ -1,10 +1,12 @@
 
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import StatCards from "@/components/dashboard/StatCards";
 import ProgressChart from "@/components/dashboard/ProgressChart";
 
 const DashboardPage = () => {
+  const [timeRange, setTimeRange] = useState("week");
+  
   return (
     <div className="min-h-screen bg-brand-blue">
       <div className="flex">
@@ -26,7 +28,7 @@ const DashboardPage = () => {
             <div className="mt-8">
               <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-4">Your Progress</h2>
-                <ProgressChart />
+                <ProgressChart timeRange={timeRange} />
               </div>
             </div>
             
