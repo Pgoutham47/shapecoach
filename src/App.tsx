@@ -19,6 +19,8 @@ import SettingsPage from "./pages/SettingsPage";
 import FeaturesPage from "./pages/FeaturesPage";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
+import PricingPage from "./pages/PricingPage";
+import AboutPage from "./pages/AboutPage";
 import NotFound from "./pages/NotFound";
 
 // Create a QueryClient instance inside the component
@@ -46,6 +48,8 @@ const App = () => {
               <Route path="/shop" element={<ShopPage />} />
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/features" element={<FeaturesPage />} />
+              <Route path="/pricing" element={<PricingPage />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -1,56 +1,13 @@
 
-import React, { useState } from "react";
+import React from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ProgressChart from "@/components/dashboard/ProgressChart";
 import { Button } from "@/components/ui/button";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, BarChart, Bar } from "recharts";
-import { ArrowUpRight, Calendar, ChevronDown } from "lucide-react";
-
-const weightData = [
-  { date: "Jan 1", weight: 185 },
-  { date: "Jan 8", weight: 184 },
-  { date: "Jan 15", weight: 183 },
-  { date: "Jan 22", weight: 182 },
-  { date: "Jan 29", weight: 181 },
-  { date: "Feb 5", weight: 180 },
-  { date: "Feb 12", weight: 179 },
-  { date: "Feb 19", weight: 178 },
-  { date: "Feb 26", weight: 177 },
-  { date: "Mar 5", weight: 176 },
-];
-
-const strengthData = [
-  { date: "Jan 1", bench: 135, squat: 185, deadlift: 225 },
-  { date: "Jan 15", bench: 140, squat: 195, deadlift: 235 },
-  { date: "Feb 1", bench: 145, squat: 205, deadlift: 245 },
-  { date: "Feb 15", bench: 150, squat: 215, deadlift: 255 },
-  { date: "Mar 1", bench: 155, squat: 225, deadlift: 265 },
-  { date: "Mar 15", bench: 160, squat: 235, deadlift: 275 },
-];
-
-const measurementsData = [
-  { date: "Jan 1", chest: 42, waist: 36, arms: 14, legs: 24 },
-  { date: "Feb 1", chest: 42.5, waist: 35, arms: 14.3, legs: 24.5 },
-  { date: "Mar 1", chest: 43, waist: 34, arms: 14.6, legs: 25 },
-];
-
-const workoutData = [
-  { name: "Week 1", completed: 3, target: 4 },
-  { name: "Week 2", completed: 4, target: 4 },
-  { name: "Week 3", completed: 3, target: 4 },
-  { name: "Week 4", completed: 4, target: 4 },
-  { name: "Week 5", completed: 5, target: 4 },
-  { name: "Week 6", completed: 4, target: 4 },
-  { name: "Week 7", completed: 4, target: 4 },
-  { name: "Week 8", completed: 3, target: 4 },
-  { name: "Week 9", completed: 4, target: 4 },
-  { name: "Week 10", completed: 5, target: 4 },
-];
+import { ArrowUp, CalendarRange, Clock, Scale, Dumbbell, Utensils } from "lucide-react";
 
 const ProgressPage = () => {
-  const [timeRange, setTimeRange] = useState("3m");
-  
   return (
     <div className="min-h-screen bg-brand-blue">
       <div className="flex">
@@ -63,266 +20,324 @@ const ProgressPage = () => {
                 Your Progress
               </h1>
               <p className="text-gray-300">
-                Track your fitness journey and see how far you've come
+                Track your fitness journey and celebrate your achievements
               </p>
             </div>
             
-            <div className="flex justify-between items-center mb-6">
-              <Tabs defaultValue="weight" className="w-full max-w-md">
-                <TabsList className="bg-brand-blue/50 border border-white/10">
-                  <TabsTrigger 
-                    value="weight" 
-                    className="data-[state=active]:bg-brand-yellow data-[state=active]:text-brand-blue"
-                  >
-                    Weight
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="strength" 
-                    className="data-[state=active]:bg-brand-yellow data-[state=active]:text-brand-blue"
-                  >
-                    Strength
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="measurements" 
-                    className="data-[state=active]:bg-brand-yellow data-[state=active]:text-brand-blue"
-                  >
-                    Measurements
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="workouts" 
-                    className="data-[state=active]:bg-brand-yellow data-[state=active]:text-brand-blue"
-                  >
-                    Workouts
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
+            <Tabs defaultValue="overview" className="w-full mb-8">
+              <TabsList className="bg-brand-blue/50 border border-white/10 w-full justify-start">
+                <TabsTrigger
+                  value="overview"
+                  className="data-[state=active]:bg-brand-yellow data-[state=active]:text-brand-blue"
+                >
+                  Overview
+                </TabsTrigger>
+                <TabsTrigger
+                  value="weight"
+                  className="data-[state=active]:bg-brand-yellow data-[state=active]:text-brand-blue"
+                >
+                  Weight
+                </TabsTrigger>
+                <TabsTrigger
+                  value="measurements"
+                  className="data-[state=active]:bg-brand-yellow data-[state=active]:text-brand-blue"
+                >
+                  Measurements
+                </TabsTrigger>
+                <TabsTrigger
+                  value="strength"
+                  className="data-[state=active]:bg-brand-yellow data-[state=active]:text-brand-blue"
+                >
+                  Strength
+                </TabsTrigger>
+              </TabsList>
               
-              <div className="flex items-center">
-                <Button variant="outline" className="border-white/10 text-white hover:bg-white/10">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  <span>{timeRange}</span>
-                  <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-            
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 mb-8">
-              <TabsContent value="weight" className="mt-0">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold text-white">Weight Progression</h2>
-                  <div className="flex items-center text-brand-yellow">
-                    <ArrowUpRight className="mr-1 h-4 w-4" />
-                    <span>-9 lbs</span>
-                  </div>
-                </div>
-                
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={weightData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff20" />
-                      <XAxis dataKey="date" stroke="#ffffff80" />
-                      <YAxis stroke="#ffffff80" domain={['dataMin - 5', 'dataMax + 5']} />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: '#0f172a', 
-                          borderColor: '#ffffff30',
-                          color: '#fff'
-                        }} 
-                      />
-                      <Line 
-                        type="monotone" 
-                        dataKey="weight" 
-                        stroke="#fbbf24" 
-                        strokeWidth={2} 
-                        dot={{ r: 4, strokeWidth: 2 }} 
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="strength" className="mt-0">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold text-white">Strength Progression</h2>
-                  <div className="flex items-center text-brand-yellow">
-                    <ArrowUpRight className="mr-1 h-4 w-4" />
-                    <span>+25%</span>
-                  </div>
-                </div>
-                
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={strengthData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff20" />
-                      <XAxis dataKey="date" stroke="#ffffff80" />
-                      <YAxis stroke="#ffffff80" />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: '#0f172a', 
-                          borderColor: '#ffffff30',
-                          color: '#fff'
-                        }}
-                      />
-                      <Legend />
-                      <Line type="monotone" dataKey="bench" name="Bench Press" stroke="#fbbf24" strokeWidth={2} />
-                      <Line type="monotone" dataKey="squat" name="Squat" stroke="#3b82f6" strokeWidth={2} />
-                      <Line type="monotone" dataKey="deadlift" name="Deadlift" stroke="#10b981" strokeWidth={2} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="measurements" className="mt-0">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold text-white">Body Measurements</h2>
-                  <div className="flex items-center text-brand-yellow">
-                    <ArrowUpRight className="mr-1 h-4 w-4" />
-                    <span>Improving</span>
-                  </div>
-                </div>
-                
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={measurementsData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff20" />
-                      <XAxis dataKey="date" stroke="#ffffff80" />
-                      <YAxis stroke="#ffffff80" />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: '#0f172a', 
-                          borderColor: '#ffffff30',
-                          color: '#fff'
-                        }}
-                      />
-                      <Legend />
-                      <Line type="monotone" dataKey="chest" name="Chest (in)" stroke="#fbbf24" strokeWidth={2} />
-                      <Line type="monotone" dataKey="waist" name="Waist (in)" stroke="#3b82f6" strokeWidth={2} />
-                      <Line type="monotone" dataKey="arms" name="Arms (in)" stroke="#10b981" strokeWidth={2} />
-                      <Line type="monotone" dataKey="legs" name="Legs (in)" stroke="#ec4899" strokeWidth={2} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="workouts" className="mt-0">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold text-white">Workout Consistency</h2>
-                  <div className="flex items-center text-brand-yellow">
-                    <ArrowUpRight className="mr-1 h-4 w-4" />
-                    <span>92%</span>
-                  </div>
-                </div>
-                
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={workoutData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff20" />
-                      <XAxis dataKey="name" stroke="#ffffff80" />
-                      <YAxis stroke="#ffffff80" />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: '#0f172a', 
-                          borderColor: '#ffffff30',
-                          color: '#fff'
-                        }}
-                      />
-                      <Legend />
-                      <Bar dataKey="completed" name="Completed Workouts" fill="#fbbf24" />
-                      <Bar dataKey="target" name="Target Workouts" fill="#3b82f6" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </TabsContent>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-white">Key Stats</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Starting Weight</span>
-                      <span className="text-white font-medium">185 lbs</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Current Weight</span>
-                      <span className="text-white font-medium">176 lbs</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Total Weight Loss</span>
-                      <span className="text-brand-yellow font-medium">9 lbs</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Strength Increase</span>
-                      <span className="text-brand-yellow font-medium">25%</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Workout Adherence</span>
-                      <span className="text-brand-yellow font-medium">92%</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-white">Recent Achievements</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-4">
-                    {[
-                      { title: "10 Workouts Completed", date: "Mar 1, 2023" },
-                      { title: "First 5-Rep Chin-Up", date: "Feb 20, 2023" },
-                      { title: "5 lbs Weight Loss", date: "Feb 15, 2023" },
-                      { title: "Completed Core Challenge", date: "Feb 10, 2023" },
-                      { title: "Perfect Week", date: "Feb 1, 2023" }
-                    ].map((achievement, index) => (
-                      <li key={index} className="flex justify-between items-center border-b border-white/10 last:border-0 pb-2 last:pb-0">
+              <TabsContent value="overview" className="mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                  <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start">
                         <div>
-                          <p className="text-white font-medium">{achievement.title}</p>
-                          <p className="text-gray-400 text-sm">{achievement.date}</p>
+                          <p className="text-gray-400 text-sm">Current Weight</p>
+                          <h3 className="text-2xl font-semibold text-white mt-1">185 lbs</h3>
                         </div>
-                        <div className="h-8 w-8 bg-brand-yellow/20 rounded-full flex items-center justify-center">
-                          <span className="text-brand-yellow text-sm">🏆</span>
+                        <div className="bg-brand-yellow/20 p-3 rounded-full">
+                          <Scale className="h-6 w-6 text-brand-yellow" />
                         </div>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
+                      </div>
+                      <div className="flex items-center mt-4">
+                        <div className="bg-green-500/20 text-green-500 text-xs rounded-full px-2 py-1 flex items-center">
+                          <ArrowUp className="h-3 w-3 mr-1" />
+                          3.2%
+                        </div>
+                        <span className="text-gray-400 text-xs ml-2">vs last month</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="text-gray-400 text-sm">Body Fat</p>
+                          <h3 className="text-2xl font-semibold text-white mt-1">18.5%</h3>
+                        </div>
+                        <div className="bg-blue-500/20 p-3 rounded-full">
+                          <Scale className="h-6 w-6 text-blue-500" />
+                        </div>
+                      </div>
+                      <div className="flex items-center mt-4">
+                        <div className="bg-green-500/20 text-green-500 text-xs rounded-full px-2 py-1 flex items-center">
+                          <ArrowUp className="h-3 w-3 mr-1" />
+                          2.1%
+                        </div>
+                        <span className="text-gray-400 text-xs ml-2">vs last month</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="text-gray-400 text-sm">Workouts</p>
+                          <h3 className="text-2xl font-semibold text-white mt-1">24</h3>
+                        </div>
+                        <div className="bg-green-500/20 p-3 rounded-full">
+                          <Dumbbell className="h-6 w-6 text-green-500" />
+                        </div>
+                      </div>
+                      <div className="flex items-center mt-4">
+                        <div className="bg-green-500/20 text-green-500 text-xs rounded-full px-2 py-1 flex items-center">
+                          <ArrowUp className="h-3 w-3 mr-1" />
+                          16%
+                        </div>
+                        <span className="text-gray-400 text-xs ml-2">vs last month</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="text-gray-400 text-sm">Nutrition Score</p>
+                          <h3 className="text-2xl font-semibold text-white mt-1">82/100</h3>
+                        </div>
+                        <div className="bg-purple-500/20 p-3 rounded-full">
+                          <Utensils className="h-6 w-6 text-purple-500" />
+                        </div>
+                      </div>
+                      <div className="flex items-center mt-4">
+                        <div className="bg-green-500/20 text-green-500 text-xs rounded-full px-2 py-1 flex items-center">
+                          <ArrowUp className="h-3 w-3 mr-1" />
+                          5%
+                        </div>
+                        <span className="text-gray-400 text-xs ml-2">vs last month</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <Card className="bg-white/5 backdrop-blur-sm border-white/10 lg:col-span-2">
+                    <CardHeader>
+                      <CardTitle className="text-white">Weight Progress</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-80">
+                        <ProgressChart />
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                    <CardHeader>
+                      <CardTitle className="text-white">Recent Achievements</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {[
+                          { 
+                            title: "10 Workouts Completed", 
+                            date: "May 15, 2023", 
+                            icon: <Dumbbell className="h-5 w-5 text-brand-yellow" /> 
+                          },
+                          { 
+                            title: "Weight Goal Reached", 
+                            date: "April 28, 2023", 
+                            icon: <Scale className="h-5 w-5 text-green-500" /> 
+                          },
+                          { 
+                            title: "30 Days Streak", 
+                            date: "April 10, 2023", 
+                            icon: <CalendarRange className="h-5 w-5 text-blue-500" /> 
+                          },
+                          { 
+                            title: "First Coaching Session", 
+                            date: "March 22, 2023", 
+                            icon: <Clock className="h-5 w-5 text-purple-500" /> 
+                          }
+                        ].map((achievement, index) => (
+                          <div key={index} className="flex items-start">
+                            <div className="bg-white/10 p-2 rounded-full mr-3">
+                              {achievement.icon}
+                            </div>
+                            <div>
+                              <h4 className="text-white font-medium">{achievement.title}</h4>
+                              <p className="text-gray-400 text-sm">{achievement.date}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <Button variant="outline" className="w-full mt-6 border-white/10 text-white hover:bg-white/10">
+                        View All Achievements
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
               
-              <Card className="bg-white/5 backdrop-blur-sm border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-white">Upcoming Goals</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-4">
-                    {[
-                      { title: "Reach 175 lbs", progress: 90 },
-                      { title: "Bench Press 165 lbs", progress: 60 },
-                      { title: "Complete 20 Workouts", progress: 75 },
-                      { title: "Run 5K Under 30 Min", progress: 40 },
-                      { title: "15% Body Fat", progress: 65 }
-                    ].map((goal, index) => (
-                      <li key={index} className="space-y-1">
-                        <div className="flex justify-between items-center">
-                          <p className="text-white font-medium">{goal.title}</p>
-                          <p className="text-gray-400 text-sm">{goal.progress}%</p>
+              <TabsContent value="weight" className="mt-6">
+                <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                  <CardHeader>
+                    <CardTitle className="text-white">Weight Tracking</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-80">
+                      <ProgressChart />
+                    </div>
+                    
+                    <div className="mt-6 space-y-4">
+                      <h3 className="text-lg font-medium text-white">Weight History</h3>
+                      
+                      <div className="space-y-2">
+                        {[
+                          { date: "May 22, 2023", weight: "185 lbs", change: "+0.5 lbs" },
+                          { date: "May 15, 2023", weight: "184.5 lbs", change: "-1.2 lbs" },
+                          { date: "May 8, 2023", weight: "185.7 lbs", change: "-0.8 lbs" },
+                          { date: "May 1, 2023", weight: "186.5 lbs", change: "-1.5 lbs" },
+                          { date: "April 24, 2023", weight: "188 lbs", change: "-" }
+                        ].map((entry, index) => (
+                          <div key={index} className="flex justify-between items-center border-b border-white/10 pb-2 last:border-0">
+                            <span className="text-gray-300">{entry.date}</span>
+                            <span className="text-white font-medium">{entry.weight}</span>
+                            <span className={`text-sm ${entry.change.startsWith("+") ? "text-red-400" : entry.change === "-" ? "text-gray-400" : "text-green-400"}`}>
+                              {entry.change}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="measurements" className="mt-6">
+                <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                  <CardHeader>
+                    <CardTitle className="text-white">Body Measurements</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                      {[
+                        { label: "Chest", current: "42 in", previous: "44 in", change: "-2 in" },
+                        { label: "Waist", current: "34 in", previous: "36 in", change: "-2 in" },
+                        { label: "Hips", current: "40 in", previous: "41 in", change: "-1 in" },
+                        { label: "Arms", current: "15 in", previous: "14.5 in", change: "+0.5 in" },
+                        { label: "Thighs", current: "24 in", previous: "24.5 in", change: "-0.5 in" },
+                        { label: "Calves", current: "16 in", previous: "15.5 in", change: "+0.5 in" }
+                      ].map((measurement, index) => (
+                        <Card key={index} className="bg-white/10 border-white/5">
+                          <CardContent className="p-4">
+                            <h3 className="text-lg font-medium text-white">{measurement.label}</h3>
+                            <div className="flex justify-between items-center mt-2">
+                              <div>
+                                <p className="text-xs text-gray-400">Current</p>
+                                <p className="text-white font-semibold">{measurement.current}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-400">Previous</p>
+                                <p className="text-gray-300">{measurement.previous}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-400">Change</p>
+                                <p className={`font-medium ${measurement.change.startsWith("+") ? "text-green-400" : "text-brand-yellow"}`}>
+                                  {measurement.change}
+                                </p>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="strength" className="mt-6">
+                <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+                  <CardHeader>
+                    <CardTitle className="text-white">Strength Progress</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-6">
+                      {[
+                        { 
+                          exercise: "Bench Press", 
+                          current: "185 lbs", 
+                          progress: [
+                            { date: "May 20", weight: "185 lbs" },
+                            { date: "May 13", weight: "180 lbs" },
+                            { date: "May 6", weight: "175 lbs" },
+                            { date: "Apr 29", weight: "170 lbs" }
+                          ] 
+                        },
+                        { 
+                          exercise: "Squats", 
+                          current: "225 lbs", 
+                          progress: [
+                            { date: "May 18", weight: "225 lbs" },
+                            { date: "May 11", weight: "215 lbs" },
+                            { date: "May 4", weight: "205 lbs" },
+                            { date: "Apr 27", weight: "195 lbs" }
+                          ] 
+                        },
+                        { 
+                          exercise: "Deadlift", 
+                          current: "275 lbs", 
+                          progress: [
+                            { date: "May 22", weight: "275 lbs" },
+                            { date: "May 15", weight: "265 lbs" },
+                            { date: "May 8", weight: "255 lbs" },
+                            { date: "May 1", weight: "245 lbs" }
+                          ] 
+                        }
+                      ].map((exercise, index) => (
+                        <div key={index} className="space-y-3">
+                          <div className="flex justify-between items-center">
+                            <h3 className="text-lg font-medium text-white">{exercise.exercise}</h3>
+                            <div className="bg-brand-yellow/20 text-brand-yellow text-sm rounded-full px-3 py-1">
+                              Current: {exercise.current}
+                            </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-4 gap-2">
+                            {exercise.progress.map((entry, entryIndex) => (
+                              <div key={entryIndex} className="bg-white/10 p-3 rounded-lg text-center">
+                                <p className="text-xs text-gray-400">{entry.date}</p>
+                                <p className="text-white font-medium">{entry.weight}</p>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                        <div className="w-full bg-white/10 rounded-full h-2">
-                          <div 
-                            className="bg-brand-yellow h-2 rounded-full" 
-                            style={{ width: `${goal.progress}%` }}
-                          ></div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
           </main>
         </div>
       </div>
