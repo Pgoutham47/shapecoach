@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowUp, CalendarRange, Clock, Scale, Dumbbell, Utensils } from "lucide-react";
 
 const ProgressPage = () => {
+  const [timeRange, setTimeRange] = useState("week");
+  
   return (
     <div className="min-h-screen bg-brand-blue">
       <div className="flex">
@@ -146,7 +147,7 @@ const ProgressPage = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="h-80">
-                        <ProgressChart />
+                        <ProgressChart timeRange={timeRange} />
                       </div>
                     </CardContent>
                   </Card>
@@ -206,7 +207,7 @@ const ProgressPage = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="h-80">
-                      <ProgressChart />
+                      <ProgressChart timeRange={timeRange} />
                     </div>
                     
                     <div className="mt-6 space-y-4">
